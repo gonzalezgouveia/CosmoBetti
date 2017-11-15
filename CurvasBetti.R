@@ -1,12 +1,11 @@
-#programa de analisis de datos de astronomia
+#Programa de analisis de datos de Cosmologia
 
-#este programa pretende analizar los datos de cosmología
-#se quieren calcular dos cosas:
-  #1 curvas de betti para detectar diferencias
-  #2 tiempos que tarde al algoritmo
-#creo que lo mejor es tomar las curvas de Betti de cada nube de datos
-#y presentarla en una sola gráfica, una curva para cada grado de homología
-# hacer un reporte explicando esto y relatando diferencias
+#Se pretende analizar datos de galaxias de diferentes modelos a 
+#traves de las curvas de Betti.
+#Se calculan tres cosas:
+  #1 Curvas de Betti para detectar diferencias
+  #2 Curva de Betti promedio y error estandar
+  #3 tiempos que tarde al algoritmo
 
 #librerias
 library(TDA) #libreria/modulo de R para análisis topológico de datos
@@ -84,12 +83,18 @@ bettiplotdiff <- function(xseq,bc1,bc2,k,main='',add,col,xlim,ylab){
 t1 <- proc.time()
 print('empieza proceso')
 
+#set working directory
+setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/datos2/")
+
 #leer los datos
-#gr general relativity
-grbox1 = as.matrix(read.table("file:///C:/Users/fafa/Desktop/proyecto_cosmologia/HOD_GR_B1024_Box1.dat"))
-grbox2 = as.matrix(read.table("file:///C:/Users/fafa/Desktop/proyecto_cosmologia/HOD_GR_B1024_Box2.dat"))
-n1box1 = as.matrix(read.table("file:///C:/Users/fafa/Desktop/proyecto_cosmologia/HOD_N1_B1024_Box1.dat"))
-n5box1 = as.matrix(read.table("file:///C:/Users/fafa/Desktop/proyecto_cosmologia/HOD_N5_B1024_Box1.dat"))
+NombresDatos <- list.files(pattern = "*.dat")
+for(nombre in NombresDatos){
+  aux1 <- strsplit(nombre,"[.]")[[1]][1] #separa en punto
+  aux2 <- strsplit(aux1,"_")[[1]][c(2,4)] #separa en underscore
+  NombreVariable <- Reduce(function(...){paste(...,sep="")},aux2)
+  print(NombreVariable)
+  assign(NombreVariable,as.matrix(read.table(nombre)))
+}
 print('datos leidos')
 t2 <- proc.time()
 print(t2-t1)
