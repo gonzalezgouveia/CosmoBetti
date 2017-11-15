@@ -88,23 +88,30 @@ setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/datos2/")
 
 #leer los datos
 NombresDatos <- list.files(pattern = "*.dat")
+NombresVariables <- c()
 for(nombre in NombresDatos){
   aux1 <- strsplit(nombre,"[.]")[[1]][1] #separa en punto
   aux2 <- strsplit(aux1,"_")[[1]][c(2,4)] #separa en underscore
   NombreVariable <- Reduce(function(...){paste(...,sep="")},aux2)
   print(NombreVariable)
+  NombresVariables <- c(NombresVariables,NombreVariable)
   assign(NombreVariable,as.matrix(read.table(nombre)))
 }
-print('datos leidos')
+print('### datos leidos ###')
 t2 <- proc.time()
 print(t2-t1)
 
 #calcular homología persistente
-Diag_gr1 <- alphaShapeDiag(X = grbox1, printProgress = TRUE)
-Diag_gr2 <- alphaShapeDiag(X = grbox2, printProgress = TRUE)
-Diag_n1 <- alphaShapeDiag(X = n1box1, printProgress = TRUE)
-Diag_n5 <- alphaShapeDiag(X = n5box1, printProgress = TRUE)
-print('diagramas de persistencia calculados')
+NombresDiag <- c()
+for(nombre in NombresVariables){
+  print(paste('calculando diagrama de: ',nombre))
+  NombreDiag <- paste('Diag',nombre,sep="_")
+  diag <- alphaShapeDiag(X = get(nombre), printProgress = TRUE)
+  assign(NombreDiag,diag)
+  NombresDiag <- c(NombresDiag,NombreDiag)
+  print(paste('diagrama creado como: ',NombreDiag))
+}
+print('### diagramas de persistencia calculados ###')
 t3 <- proc.time()
 print(t3-t2)
 #calcular curvas de Betti
