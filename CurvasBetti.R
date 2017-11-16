@@ -114,32 +114,57 @@ for(nombre in NombresVariables){
 print('### diagramas de persistencia calculados ###')
 t3 <- proc.time()
 print(t3-t2)
+
 #calcular curvas de Betti
-bc_gr1 <- betticurves(xmax = 40,l=500,ASDIAG=Diag_gr1)
-bc_gr2 <- betticurves(xmax = 40,l=500,ASDIAG=Diag_gr2)
-bc_n1 <- betticurves(xmax = 40,l=500,ASDIAG=Diag_n1)
-bc_n5 <- betticurves(xmax = 40,l=500,ASDIAG=Diag_n5)
+NombresCurvas <- c()
+for(nombre in NombresDiag){
+  print(paste('calculando curva de betti de: ',nombre))
+  auxnombre <- strsplit(nombre,"_")[[1]][2]
+  NombreCurva <- paste('BC',auxnombre,sep="_")
+  bc <- betticurves(xmax = 40,l=500,ASDIAG=get(nombre))
+  assign(NombreCurva,bc)
+  NombresCurvas <- c(NombresCurvas,NombreCurva)
+  print(paste('curva de betti creada como: ',NombreCurva))
+}
 print('curvas de betti calculadas')
 t4 <- proc.time()
 print(t4-t3)
+
+#cambiar directorio donde guardare las imagenes
+#setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
 
 #graficar de las curvas
 xmax = 40
 xseq <-seq(0,xmax,length.out = 500) 
 xlim_vec = c(10,25,40)
 for(k in 1:3){
+  print(paste('Curva de Betti de orden: ',k))
   xlim = xlim_vec[k]
-  pdf(paste('todojunto_betti',k,'.pdf',sep=""),
-      width = 6,height = 6)
-  grafica1(bc_gr1,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
-  grafica1(bc_gr2,k,'',add=TRUE, col = 4,xseq,xlim)
-  grafica1(bc_n1,k,'',add = TRUE,col=2,xseq,xlim)
-  grafica1(bc_n5,k,'',add=T,col=3,xseq,xlim)
+  pdf(paste('todojunto_betti',k,'.pdf',sep=""),width = 6,height = 6)
+  grafica1(BC_F4Box1,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
+  ColorIndex <- c(rep(1,4),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5))
+  i <- 1
+  for(nombre in NombresCurvas[-1]){
+    col <- ColorIndex[i]
+    i <- i+1
+    grafica1(get(nombre),k,'',add=TRUE, col = col,xseq,xlim)
+  }
   legend("topright", inset=.05, title="Modelos",
-         c("gr1","gr2","n5","n1"), fill=c(1,4,2,3), horiz=F)
+         c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
   dev.off()
 }
 
+#CALCULAR LAS CURVAS PROMEDIO PARA LOS 6 MODELOS
+for(nombre in c('F4','F5','F6','GR','N1','N5')){
+  for(index in 1:5){
+    NombreVar <- paste('BC_',nombre,'Box',index,sep="")
+    #aqui va el proceso para ir promediando
+      #hacer matrices con los 5 curvas de Betti y despues un colMeans
+  }
+}
+#HACER LA GRAFICA CON LAS 6 LINEAS DE LAS PROMEDIOS
+#CALCULAR DESVIACION ESTANDAR DE LAS CURVAS
+#HACER GRAFICA CON CURVAS PROMEDIO (GGPLOT2)
 
 for(k in 1:3){
   xlim = xlim_vec[k]
