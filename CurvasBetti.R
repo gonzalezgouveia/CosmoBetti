@@ -112,6 +112,7 @@ for(nombre in NombresVariables){
   print(paste('diagrama creado como: ',NombreDiag))
 }
 print('### diagramas de persistencia calculados ###')
+
 t3 <- proc.time()
 print(t3-t2)
 
@@ -131,7 +132,7 @@ t4 <- proc.time()
 print(t4-t3)
 
 #cambiar directorio donde guardare las imagenes
-#setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
+setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
 
 #graficar de las curvas
 xmax = 40
@@ -155,14 +156,46 @@ for(k in 1:3){
 }
 
 #CALCULAR LAS CURVAS PROMEDIO PARA LOS 6 MODELOS
+
+NombresCurvasPromedio <- c()
 for(nombre in c('F4','F5','F6','GR','N1','N5')){
-  for(index in 1:5){
-    NombreVar <- paste('BC_',nombre,'Box',index,sep="")
-    #aqui va el proceso para ir promediando
-      #hacer matrices con los 5 curvas de Betti y despues un colMeans
+  print(paste('trabajando con el modelo: ',nombre))
+  NombreLista <- paste('MBC',nombre,sep = '_')
+  assign(NombreLista,list())
+  NombresCurvasPromedio <- c(NombresCurvasPromedio,NombreLista)
+  for(k in 0:2){
+    print(paste('calculando MBC para grado de homologia: ',k))
+    NombreMBC <- paste('MBC_',k,'_',nombre,sep='')
+    assign(NombreMBC,rep(0,500))
+    for(index in 1:5){
+      NombreVar <- paste('BC_',nombre,'Box',index,sep="")
+      assign(NombreMBC,get(NombreMBC)+get(NombreVar)[[k+1]])
+    }
+    assign(NombreLista,c(get(NombreLista),list(get(NombreMBC)/5)))
   }
 }
 #HACER LA GRAFICA CON LAS 6 LINEAS DE LAS PROMEDIOS
+xmax = 40
+xseq <-seq(0,xmax,length.out = 500) 
+xlim_vec = c(10,25,40)
+for(k in 1:3){
+  print(paste('Curva de Betti PROMEDIO de orden: ',k))
+  xlim = xlim_vec[k]
+  pdf(paste('promedio_betti',k,'.pdf',sep=""),width = 6,height = 6)
+  grafica1(MBC_F4,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
+  #ColorIndex <- c(rep(1,4),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5))
+  i <- 1
+  for(nombre in NombresCurvasPromedio[-1]){
+    #col <- ColorIndex[i]
+    i <- i+1
+    grafica1(get(nombre),k,'',add=TRUE, col = i,xseq,xlim)
+  }
+  legend("topright", inset=.05, title="Modelos",
+         c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
+  dev.off()
+}
+
+
 #CALCULAR DESVIACION ESTANDAR DE LAS CURVAS
 #HACER GRAFICA CON CURVAS PROMEDIO (GGPLOT2)
 
