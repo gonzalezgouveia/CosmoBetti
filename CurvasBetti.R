@@ -174,6 +174,8 @@ for(nombre in c('F4','F5','F6','GR','N1','N5')){
     assign(NombreLista,c(get(NombreLista),list(get(NombreMBC)/5)))
   }
 }
+print('Curvas Promedio calculadas')
+
 #HACER LA GRAFICA CON LAS 6 LINEAS DE LAS PROMEDIOS
 xmax = 40
 xseq <-seq(0,xmax,length.out = 500) 
@@ -194,10 +196,51 @@ for(k in 1:3){
          c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
   dev.off()
 }
+print('grafica de los promedios')
 
+#IMPRIMIR TODAS LAS DIFERENCIAS DOS A DOS DE LAS PROMEDIOS
+xmax = 40
+xseq <-seq(0,xmax,length.out = 500) 
+xlim_vec = c(10,25,40)
+
+ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
+for(mod1 in 1:5){
+  #asignar curva de betti promedio para modelo 1
+  NombreMBC1 <- paste('MBC_',ModelosIndex[mod1],sep="")
+  MBC1 <- get(NombreMBC1)
+  for(mod2 in (mod1+1):6){
+    #asignar curva de betti promedio para modelo 2
+    NombreMBC2 <- paste('MBC_',ModelosIndex[mod2],sep="")
+    MBC2 <- get(NombreMBC2)
+    for(k in 1:3){
+      #generando pdf
+      xlim <- xlim_vec[k]
+      m1 <- ModelosIndex[mod1];    m2 <- ModelosIndex[mod2]
+      titulo <- paste('diff_betti_mod',m1,'-',m2,'_betti_',k,sep="")
+#      pdf(paste(titulo,'.pdf',sep=""),width = 6,height = 6)
+      png(paste(titulo,'.png',sep=""),width = 480,height = 480)
+      bettiplotdiff(xseq,MBC1,MBC2,k,main=titulo
+                    ,add=F,col=1,xlim)
+      dev.off()
+    }
+  }
+}
+print('graficas graficadas :p')
 
 #CALCULAR DESVIACION ESTANDAR DE LAS CURVAS
-#HACER GRAFICA CON CURVAS PROMEDIO (GGPLOT2)
+
+
+
+
+#IMPRIMIR DIFERENCIAS DOS A DOS CON DESVIACION ESTANDAR
+  #AGREGAR DESCIACION ESTANDAR A ESTAS DIFERENCIAS
+
+#HACER PRIMERA ENTREGA DE REPORTE CON LAS DIFERENCIAS
+  #RESALTAR CUALES PARECEN SER DIFERENCIAS SIGNIFICATIVAS
+
+#PARA UNA SEGUNDA ENTREGA PROPONER SI HACER LA PRUEBA DE HIPOTESIS
+  #ESTO SERIA UNA TABLA CON LAS COMPARACIONES DOS A DOS
+  #DE ESTA TABLA REGRESARIA UN "RECHAZA QUE SON IGUALES" O NO
 
 for(k in 1:3){
   xlim = xlim_vec[k]
