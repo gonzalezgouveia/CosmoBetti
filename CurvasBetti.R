@@ -228,8 +228,37 @@ for(mod1 in 1:5){
 print('graficas graficadas :p')
 
 #CALCULAR DESVIACION ESTANDAR DE LAS CURVAS
-
-
+ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
+for(mod in 1:6){
+  #print(paste('Trabajando con modelo: ',ModelosIndex[mod]))
+  #inicializando variable para la desviacion estandar
+  NombreVarVar <- paste('SD_MBC_',ModelosIndex[mod],sep="")
+  assign(NombreVarVar,list())
+  #print(paste('Creando Lista',NombreVarVar))
+  #asignando MCB_"modelos" correspondiente
+  NombreMBC <- paste('MBC_',ModelosIndex[mod],sep="")
+  MCB <- get(NombreMBC)
+  #recuerda que MCB_"modelos" es una lista de 3 vectores
+  for(k in  1:3){
+    #print(paste('Grafo de homologia: ',k,'. Para:',NombreVarVar))
+    MBC_k <- MCB[[k]] #asignando la MCB corresp al grado de homologia
+    var <- rep(0,500)
+    for(l in 1:500){
+      for(muestra in 1:5){
+        NombreVarMuestra <- paste('BC_',ModelosIndex[mod],'Box',muestra,sep="")
+        Lista <- get(NombreVarMuestra)
+        Vector <- Lista[[k]]
+        Valor <- Vector[l]
+        aux <- 1/5*(Valor-MBC_k[l])^2 #calculo de varianza
+        var[l] <- var[l]+aux
+      }
+      var[l] <- sqrt(var[l]) #esto es para tomar la desviacion
+    }
+    assign(NombreVarVar,c(get(NombreVarVar),list(var)))
+    print(paste('calculada varianza para curva:',NombreVarVar))
+  }
+}
+print('Calculadas todas las varianzas')
 
 
 #IMPRIMIR DIFERENCIAS DOS A DOS CON DESVIACION ESTANDAR
@@ -243,7 +272,7 @@ print('graficas graficadas :p')
   #DE ESTA TABLA REGRESARIA UN "RECHAZA QUE SON IGUALES" O NO
 
 for(k in 1:3){
-  xlim = xlim_vec[k]
+  xlim <- xlim_vec[k]
   pdf(paste('diferencias_betti',k,'.pdf',sep=""),
       width = 6,height = 6)
   bettiplotdiff(xseq,bc_gr1,bc_n1,k,main=paste('Diferencias curvas de Betti. beta = ',(k-1))
