@@ -79,6 +79,32 @@ bettiplotdiff <- function(xseq,bc1,bc2,k,main='',add,col,xlim,ylab){
           ylab=bettilab(k))
   }
 }
+
+bettiplotbanda(xseq,MBC1,MBC2,k,main=titulo,col=1,xlim)
+bettiplotbanda <- function(xseq,bc1,bc2,sd1,sd2,k,main='',xlim,ylab){
+  bcdiff <- bc1[[k]][1,]-bc2[[k]][1,]
+  #curva para modelo 2
+  plot(xseq,bcdiff,main=main,type='l',col=1,xlim=c(0,xlim),
+       ylab=bettilab(k))
+  #desviacion para modelo 2
+  sd2sup <- bcdiff+sd2[[k]]
+  sd2inf <- bcdiff-sd2[[k]]
+  lines(xseq,sd2sup,col=2)
+  lines(xseq,sd2inf,col=2)
+  polygon(c(xseq, rev(xseq)), c(sd2sup, rev(sd2inf)),
+          col = rgb(1, 0, 0,0.1), border = NA)
+  lines(xseq,bcdiff,col=1,lwd=2)
+  #curva para modelo 1
+  abline(h=0,col=1)  #eje x
+  #banda para modelo 1
+  sd1sup <- sd1[[k]]
+  sd1inf <- -sd1[[k]]
+  lines(xseq,sd1sup,col=4)
+  lines(xseq,sd1inf,col=4)
+  polygon(c(xseq, rev(xseq)), c(sd1sup, rev(sd1inf)),
+          col = rgb(0, 0, 1,0.1), border = NA)
+  abline(h=0,col=1,lwd=2)
+}
 #inicio de tiempos
 t1 <- proc.time()
 print('empieza proceso')
@@ -260,9 +286,37 @@ for(mod in 1:6){
 }
 print('Calculadas todas las varianzas')
 
-
 #IMPRIMIR DIFERENCIAS DOS A DOS CON DESVIACION ESTANDAR
-  #AGREGAR DESCIACION ESTANDAR A ESTAS DIFERENCIAS
+xmax = 40
+xseq <-seq(0,xmax,length.out = 500) 
+xlim_vec = c(10,25,40)
+
+ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
+for(mod1 in 1:5){
+  #asignar curva de betti promedio para modelo 1
+  NombreMBC1 <- paste('MBC_',ModelosIndex[mod1],sep="")
+  MBC1 <- get(NombreMBC1)
+  NombreSD1 <- paste('SD_MBC_',ModelosIndex[mod1],sep="")
+  SD1 <- get(NombreSD1)
+  for(mod2 in (mod1+1):6){
+    #asignar curva de betti promedio para modelo 2
+    NombreMBC2 <- paste('MBC_',ModelosIndex[mod2],sep="")
+    MBC2 <- get(NombreMBC2)
+    NombreSD2 <- paste('SD_MBC_',ModelosIndex[mod2],sep="")
+    SD2 <- get(NombreSD2)
+    for(k in 1:3){
+      #generando pdf
+      xlim <- xlim_vec[k]
+      m1 <- ModelosIndex[mod1];    m2 <- ModelosIndex[mod2]
+      titulo <- paste('diff_banda_mod',m1,'-',m2,'_betti_',k,sep="")
+      #pdf(paste(titulo,'.pdf',sep=""),width = 6,height = 6)
+      png(paste(titulo,'.png',sep=""),width = 480,height = 480)
+      bettiplotbanda(xseq,MBC1,MBC2,SD1,SD2,k,main=titulo,xlim)
+      dev.off()
+    }
+  }
+}
+print('graficas graficadas x2 :p')
 
 #HACER PRIMERA ENTREGA DE REPORTE CON LAS DIFERENCIAS
   #RESALTAR CUALES PARECEN SER DIFERENCIAS SIGNIFICATIVAS
