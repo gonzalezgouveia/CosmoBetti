@@ -80,7 +80,6 @@ bettiplotdiff <- function(xseq,bc1,bc2,k,main='',add,col,xlim,ylab){
   }
 }
 
-bettiplotbanda(xseq,MBC1,MBC2,k,main=titulo,col=1,xlim)
 bettiplotbanda <- function(xseq,bc1,bc2,sd1,sd2,k,main='',xlim,ylab){
   bcdiff <- bc1[[k]][1,]-bc2[[k]][1,]
   #curva para modelo 2
@@ -123,6 +122,7 @@ for(nombre in NombresDatos){
   NombresVariables <- c(NombresVariables,NombreVariable)
   assign(NombreVariable,as.matrix(read.table(nombre)))
 }
+
 print('### datos leidos ###')
 t2 <- proc.time()
 print(t2-t1)
@@ -138,7 +138,6 @@ for(nombre in NombresVariables){
   print(paste('diagrama creado como: ',NombreDiag))
 }
 print('### diagramas de persistencia calculados ###')
-
 t3 <- proc.time()
 print(t3-t2)
 
@@ -153,7 +152,7 @@ for(nombre in NombresDiag){
   NombresCurvas <- c(NombresCurvas,NombreCurva)
   print(paste('curva de betti creada como: ',NombreCurva))
 }
-print('curvas de betti calculadas')
+print('### curvas de betti calculadas ###')
 t4 <- proc.time()
 print(t4-t3)
 
@@ -161,97 +160,96 @@ print(t4-t3)
 setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
 
 #graficar de las curvas
-xmax = 40
-xseq <-seq(0,xmax,length.out = 500) 
-xlim_vec = c(10,25,40)
-for(k in 1:3){
-  print(paste('Curva de Betti de orden: ',k))
-  xlim = xlim_vec[k]
-  pdf(paste('todojunto_betti',k,'.pdf',sep=""),width = 6,height = 6)
-  grafica1(BC_F4Box1,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
-  ColorIndex <- c(rep(1,4),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5))
-  i <- 1
-  for(nombre in NombresCurvas[-1]){
-    col <- ColorIndex[i]
-    i <- i+1
-    grafica1(get(nombre),k,'',add=TRUE, col = col,xseq,xlim)
-  }
-  legend("topright", inset=.05, title="Modelos",
-         c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
-  dev.off()
-}
+# xmax = 40
+# xseq <-seq(0,xmax,length.out = 500) 
+# xlim_vec = c(10,25,40)
+# for(k in 1:3){
+#   print(paste('Curva de Betti de orden: ',k))
+#   xlim = xlim_vec[k]
+#   pdf(paste('todojunto_betti',k,'.pdf',sep=""),width = 6,height = 6)
+#   grafica1(BC_F4Box1,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
+#   ColorIndex <- c(rep(1,4),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5))
+#   i <- 1
+#   for(nombre in NombresCurvas[-1]){
+#     col <- ColorIndex[i]
+#     i <- i+1
+#     grafica1(get(nombre),k,'',add=TRUE, col = col,xseq,xlim)
+#   }
+#   legend("topright", inset=.05, title="Modelos",
+#          c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
+#   dev.off()
+# }
 
 #CALCULAR LAS CURVAS PROMEDIO PARA LOS 6 MODELOS
-
-NombresCurvasPromedio <- c()
-for(nombre in c('F4','F5','F6','GR','N1','N5')){
-  print(paste('trabajando con el modelo: ',nombre))
-  NombreLista <- paste('MBC',nombre,sep = '_')
-  assign(NombreLista,list())
-  NombresCurvasPromedio <- c(NombresCurvasPromedio,NombreLista)
-  for(k in 0:2){
-    print(paste('calculando MBC para grado de homologia: ',k))
-    NombreMBC <- paste('MBC_',k,'_',nombre,sep='')
-    assign(NombreMBC,rep(0,500))
-    for(index in 1:5){
-      NombreVar <- paste('BC_',nombre,'Box',index,sep="")
-      assign(NombreMBC,get(NombreMBC)+get(NombreVar)[[k+1]])
-    }
-    assign(NombreLista,c(get(NombreLista),list(get(NombreMBC)/5)))
-  }
-}
-print('Curvas Promedio calculadas')
+# NombresCurvasPromedio <- c()
+# for(nombre in c('F4','F5','F6','GR','N1','N5')){
+#   print(paste('trabajando con el modelo: ',nombre))
+#   NombreLista <- paste('MBC',nombre,sep = '_')
+#   assign(NombreLista,list())
+#   NombresCurvasPromedio <- c(NombresCurvasPromedio,NombreLista)
+#   for(k in 0:2){
+#     print(paste('calculando MBC para grado de homologia: ',k))
+#     NombreMBC <- paste('MBC_',k,'_',nombre,sep='')
+#     assign(NombreMBC,rep(0,500))
+#     for(index in 1:5){
+#       NombreVar <- paste('BC_',nombre,'Box',index,sep="")
+#       assign(NombreMBC,get(NombreMBC)+get(NombreVar)[[k+1]])
+#     }
+#     assign(NombreLista,c(get(NombreLista),list(get(NombreMBC)/5)))
+#   }
+# }
+# print('Curvas Promedio calculadas')
 
 #HACER LA GRAFICA CON LAS 6 LINEAS DE LAS PROMEDIOS
-xmax = 40
-xseq <-seq(0,xmax,length.out = 500) 
-xlim_vec = c(10,25,40)
-for(k in 1:3){
-  print(paste('Curva de Betti PROMEDIO de orden: ',k))
-  xlim = xlim_vec[k]
-  pdf(paste('promedio_betti',k,'.pdf',sep=""),width = 6,height = 6)
-  grafica1(MBC_F4,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
-  #ColorIndex <- c(rep(1,4),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5))
-  i <- 1
-  for(nombre in NombresCurvasPromedio[-1]){
-    #col <- ColorIndex[i]
-    i <- i+1
-    grafica1(get(nombre),k,'',add=TRUE, col = i,xseq,xlim)
-  }
-  legend("topright", inset=.05, title="Modelos",
-         c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
-  dev.off()
-}
-print('grafica de los promedios')
+# xmax = 40
+# xseq <-seq(0,xmax,length.out = 500) 
+# xlim_vec = c(10,25,40)
+# for(k in 1:3){
+#   print(paste('Curva de Betti PROMEDIO de orden: ',k))
+#   xlim = xlim_vec[k]
+#   pdf(paste('promedio_betti',k,'.pdf',sep=""),width = 6,height = 6)
+#   grafica1(MBC_F4,k,'todos los modelos',add=FALSE,col = 1,xseq,xlim)
+#   #ColorIndex <- c(rep(1,4),rep(2,5),rep(3,5),rep(4,5),rep(5,5),rep(6,5))
+#   i <- 1
+#   for(nombre in NombresCurvasPromedio[-1]){
+#     #col <- ColorIndex[i]
+#     i <- i+1
+#     grafica1(get(nombre),k,'',add=TRUE, col = i,xseq,xlim)
+#   }
+#   legend("topright", inset=.05, title="Modelos",
+#          c("F4","F5","F6","GR","N1","N5"), fill=c(1:6), horiz=F)
+#   dev.off()
+# }
+# print('grafica de los promedios')
 
 #IMPRIMIR TODAS LAS DIFERENCIAS DOS A DOS DE LAS PROMEDIOS
-xmax = 40
-xseq <-seq(0,xmax,length.out = 500) 
-xlim_vec = c(10,25,40)
-
-ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
-for(mod1 in 1:5){
-  #asignar curva de betti promedio para modelo 1
-  NombreMBC1 <- paste('MBC_',ModelosIndex[mod1],sep="")
-  MBC1 <- get(NombreMBC1)
-  for(mod2 in (mod1+1):6){
-    #asignar curva de betti promedio para modelo 2
-    NombreMBC2 <- paste('MBC_',ModelosIndex[mod2],sep="")
-    MBC2 <- get(NombreMBC2)
-    for(k in 1:3){
-      #generando pdf
-      xlim <- xlim_vec[k]
-      m1 <- ModelosIndex[mod1];    m2 <- ModelosIndex[mod2]
-      titulo <- paste('diff_betti_mod',m1,'-',m2,'_betti_',k,sep="")
-#      pdf(paste(titulo,'.pdf',sep=""),width = 6,height = 6)
-      png(paste(titulo,'.png',sep=""),width = 480,height = 480)
-      bettiplotdiff(xseq,MBC1,MBC2,k,main=titulo
-                    ,add=F,col=1,xlim)
-      dev.off()
-    }
-  }
-}
-print('graficas graficadas :p')
+# xmax = 40
+# xseq <-seq(0,xmax,length.out = 500) 
+# xlim_vec = c(10,25,40)
+# 
+# ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
+# for(mod1 in 1:5){
+#   #asignar curva de betti promedio para modelo 1
+#   NombreMBC1 <- paste('MBC_',ModelosIndex[mod1],sep="")
+#   MBC1 <- get(NombreMBC1)
+#   for(mod2 in (mod1+1):6){
+#     #asignar curva de betti promedio para modelo 2
+#     NombreMBC2 <- paste('MBC_',ModelosIndex[mod2],sep="")
+#     MBC2 <- get(NombreMBC2)
+#     for(k in 1:3){
+#       #generando pdf
+#       xlim <- xlim_vec[k]
+#       m1 <- ModelosIndex[mod1];    m2 <- ModelosIndex[mod2]
+#       titulo <- paste('diff_betti_mod',m1,'-',m2,'_betti_',k,sep="")
+#       pdf(paste(titulo,'.pdf',sep=""),width = 6,height = 6)
+#       #png(paste(titulo,'.png',sep=""),width = 480,height = 480)
+#       bettiplotdiff(xseq,MBC1,MBC2,k,main=titulo
+#                     ,add=F,col=1,xlim)
+#       dev.off()
+#     }
+#   }
+# }
+# print('graficas graficadas :p')
 
 #CALCULAR DESVIACION ESTANDAR DE LAS CURVAS
 ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
@@ -318,13 +316,6 @@ for(mod1 in 1:5){
 }
 print('graficas graficadas x2 :p')
 
-#HACER PRIMERA ENTREGA DE REPORTE CON LAS DIFERENCIAS
-  #RESALTAR CUALES PARECEN SER DIFERENCIAS SIGNIFICATIVAS
-
-#PARA UNA SEGUNDA ENTREGA PROPONER SI HACER LA PRUEBA DE HIPOTESIS
-  #ESTO SERIA UNA TABLA CON LAS COMPARACIONES DOS A DOS
-  #DE ESTA TABLA REGRESARIA UN "RECHAZA QUE SON IGUALES" O NO
-
 for(k in 1:3){
   xlim <- xlim_vec[k]
   pdf(paste('diferencias_betti',k,'.pdf',sep=""),
@@ -340,19 +331,10 @@ for(k in 1:3){
 print('graficas graficadas :p')
 t5 <- proc.time()
 print(t5-t4)
-#hacer graficas con diferencias
-  #una idea puede ser hacer gr1 como el estandar
-  #y las demas 3 gráficas serian las diferencias con respecto a gr1
-  #de esta forma, se vería cómo gr2 y n5 son cercanas a gr1
-  #y como n1 es más lejana a gr1...
-  #la próxima misión sería determinar si esta diferencia es
-  #significativa, ¿qué tamaño de muestra es necesario para esto?
-  #la cuestions es tener n muestras de gr1 y n muestras de n1
-  #luego hacer tomar la estadistica de las diferencias y determinar si
-  #son diferentes
-  #propongo un experimento piloto con 10 de cada una
-  #se expondría una representación gráfica
-    #con curvas de betti promedio y bandas
+
+#PARA UNA SEGUNDA ENTREGA PROPONER SI HACER LA PRUEBA DE HIPOTESIS
+#ESTO SERIA UNA TABLA CON LAS COMPARACIONES DOS A DOS
+#DE ESTA TABLA REGRESARIA UN "RECHAZA QUE SON IGUALES" O NO
 
 #tiempos
 print('total')
