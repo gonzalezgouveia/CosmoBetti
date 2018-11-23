@@ -1,0 +1,17 @@
+Package: BettiCurves
+Title: Compute Betti Curves For Topological Data Analysis
+Version: 0.0.1
+Authors@R: person("Rafael", "Gonzalez Gouveia", email = "gonzalez.gouveia@gmail.com",
+                  role = c("aut", "cre"))
+Description: Set of function to analyse data through topological analysis. It works with the TDA packages.
+    The description of a package is usually long,
+    spanning multiple lines. The second and subsequent lines
+    should be indented, usually with four space
+Depends: R (>= 3.1.0)
+License: MIT 
+LazyData: true
+URL: gonzalezgouveia.github.io/projects.html
+BugReports: https://github.com/gonzalezgouveia/CosmoBetti/issues
+Imports:
+    dplyr,
+    ggvis
