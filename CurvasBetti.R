@@ -314,20 +314,6 @@ for(mod1 in 1:5){
     }
   }
 }
-print('graficas graficadas x2 :p')
-
-for(k in 1:3){
-  xlim <- xlim_vec[k]
-  pdf(paste('diferencias_betti',k,'.pdf',sep=""),
-      width = 6,height = 6)
-  bettiplotdiff(xseq,bc_gr1,bc_n1,k,main=paste('Diferencias curvas de Betti. beta = ',(k-1))
-                ,add=F,col=1,xlim)
-  bettiplotdiff(xseq,bc_gr1,bc_gr2,k,main=paste('')
-                ,add=T,col=2,xlim)
-  legend("bottomright", inset=.05, title="Modelos",
-         c("gr1-gr2","gr1-n1"), fill=c(2,1), horiz=F)
-  dev.off()
-}
 print('graficas graficadas :p')
 t5 <- proc.time()
 print(t5-t4)
