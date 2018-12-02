@@ -1,6 +1,6 @@
 #Programa de analisis de datos de Cosmologia
 
-#Se pretende analizar datos de galaxias de diferentes modelos a 
+#Se pretende analizar datos de galaxias de diferentes modelos a
 #traves de las curvas de Betti.
 #Se calculan tres cosas:
   #1 Curvas de Betti para detectar diferencias
@@ -14,7 +14,8 @@ library(ggplot2) #libreria/modulo de gr?ficas bonitas
 #funciones
 betti.fun <- function(bcmat,t){
   #return the number of birth - death
-  #bcmat es una matriz
+  #bcmat es una matriz ¿de cuanto por cuanto?
+  # que es la t
   nb <- sum(bcmat[,1]<t) #number of birth
   nd <- sum(bcmat[,2]<t) #number of death
   return(nb-nd)
@@ -45,7 +46,7 @@ betticurves <- function(xmax,l=500,ASDIAG){
   plm0[1,] <- betticurve0
   plm1[1,] <- betticurve1
   plm2[1,] <- betticurve2
-  
+
   plm_list <- list(plm0,plm1,plm2)
   return(plm_list)
 }
@@ -161,7 +162,7 @@ setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
 
 #graficar de las curvas
 # xmax = 40
-# xseq <-seq(0,xmax,length.out = 500) 
+# xseq <-seq(0,xmax,length.out = 500)
 # xlim_vec = c(10,25,40)
 # for(k in 1:3){
 #   print(paste('Curva de Betti de orden: ',k))
@@ -202,7 +203,7 @@ setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
 
 #HACER LA GRAFICA CON LAS 6 LINEAS DE LAS PROMEDIOS
 # xmax = 40
-# xseq <-seq(0,xmax,length.out = 500) 
+# xseq <-seq(0,xmax,length.out = 500)
 # xlim_vec = c(10,25,40)
 # for(k in 1:3){
 #   print(paste('Curva de Betti PROMEDIO de orden: ',k))
@@ -224,9 +225,9 @@ setwd("C:/Users/fafa/Desktop/proyecto_cosmologia/graficasreporte2")
 
 #IMPRIMIR TODAS LAS DIFERENCIAS DOS A DOS DE LAS PROMEDIOS
 # xmax = 40
-# xseq <-seq(0,xmax,length.out = 500) 
+# xseq <-seq(0,xmax,length.out = 500)
 # xlim_vec = c(10,25,40)
-# 
+#
 # ModelosIndex <- c('F4','F5','F6','GR','N1','N5')
 # for(mod1 in 1:5){
 #   #asignar curva de betti promedio para modelo 1
@@ -286,7 +287,7 @@ print('Calculadas todas las varianzas')
 
 #IMPRIMIR DIFERENCIAS DOS A DOS CON DESVIACION ESTANDAR
 xmax = 40
-xseq <-seq(0,xmax,length.out = 500) 
+xseq <-seq(0,xmax,length.out = 500)
 xlim_vec = c(10,25,40)
 
 ModelosIndex <- c('F4','F5','F6','GR','N1','N5')

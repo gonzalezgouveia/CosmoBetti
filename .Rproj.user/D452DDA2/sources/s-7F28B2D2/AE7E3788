@@ -5,13 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3688113724",
+    "hash" : "0",
     "id" : "AE7E3788",
-    "lastKnownWriteTime" : 1543751127,
-    "last_content_update" : 1543751127,
+    "lastKnownWriteTime" : 1543767283,
+    "last_content_update" : 1543767283252,
     "path" : "~/GitHub/betticurves/R/CurvasBetti.R",
     "project_path" : "R/CurvasBetti.R",
     "properties" : {
+        "cursorPosition" : "330,0",
+        "scrollLine" : "312"
     },
     "relative_order" : 2,
     "source_on_save" : false,
