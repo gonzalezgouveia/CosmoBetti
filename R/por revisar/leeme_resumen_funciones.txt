@@ -1,0 +1,19 @@
+quiero tener en un solo lugar toda la informacion de los algoritmos que he hecho para TDA
+relativos al proyecto de paquete betticurves
+
+revisar el siguiente codigo en busqueda de funciones para el paquete
+- ./algoritmos y otras imagenes
+	- topo_functions.R
+		# esto basicamente sirvió para el capitulo de pruebas de hipotesis
+		- distd.fun()
+			# calculo de distribucion de distancias a la curva promedio
+			# puede ser un issue para una segunda version
+			# paquetizar esto implica hacer mucha teoria de prueba de hipotesis
+			# luego no estoy seguro que es lo que deberia programar exactamente
+			# como hacer las simulaciones para datos reales? bootstrap? noise?
+		- rechaza()
+			# complemento a distd.fun() para rechazar H0
+	- estadistica_prueba.R
+		# es un caso de uso para topo_functions.R
+	- ./clasificacion
+		- todos los archivos
