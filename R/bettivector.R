@@ -7,12 +7,11 @@ library(tidyverse)
 ##########
 
 #' compute the difference between birth-death at time t from a matrix.
-#'
+#' internal function used in bettimatrix
+#' 
 #' @param bcmat is a ?times? matrix
 #' @param t is the time or distance to compute betti.fun
 #' @return the number of birth - death
-#' @example 
-#' betti.fun(phx, t = 0.45)
 betti.fun <- function(bcmat,t){
   nb <- sum(bcmat[,1]<t)
   nd <- sum(bcmat[,2]<t)
@@ -28,8 +27,12 @@ betti.fun <- function(bcmat,t){
 #' @param xmax is the maximum length/time the betti curve is computed
 #' @param l is the dimension of each betticurve
 #' @return a 3 times l matrix with the betticurve
-#' @example 
-#' bettimatrix(diag)
+#' @examples 
+#' library(TDA)
+#' data <- cbind(runif(10), runif(10))
+#' alpha_complex <- alphaComplexDiag(data)
+#' alpha_diag <- alpha_complex$diagram
+#' bettimatrix(alpha_complex)
 bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
   # check if diag is a matrix
   # PENDIENTE: HACER FUNCION PARA CHECAR QUE ES UN DIAG VALIDO
