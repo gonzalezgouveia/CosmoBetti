@@ -1,44 +1,75 @@
 # funciones que tienen que ver con el vector de betti
 
 library(TDA) #libreria/modulo de R para an?lisis topol?gico de datos
-library(ggplot2) #libreria/modulo de gr?ficas bonitas
+library(tidyverse)
 
 #funciones
+##########
+
+#' compute the difference between birth-death at time t from a matrix.
+#'
+#' @param bcmat is a ?times? matrix
+#' @param t is the time or distance to compute betti.fun
+#' @return the number of birth - death
+#' @example 
+#' betti.fun(phx, t = 0.45)
 betti.fun <- function(bcmat,t){
-  #return the number of birth - death
-  #bcmat es una matriz ¿de cuanto por cuanto?
-  # que es la t
-  nb <- sum(bcmat[,1]<t) #number of birth
-  nd <- sum(bcmat[,2]<t) #number of death
+  nb <- sum(bcmat[,1]<t)
+  nd <- sum(bcmat[,2]<t)
   return(nb-nd)
 }
-betticurves <- function(xmax,l=500,ASDIAG){
-  #esta funcion regresa una lista con las primeras tres
-  #curvas de betti
-  #xmax es el l?mite superior de las curvas de betti
-  #(aqui se asumen los tres iguales)
-  #l es la cantidad de elementos por vector
-  #diag es el diagrama de persistencia
-  diag <- ASDIAG$diag
-  xseq <- seq(0,xmax,length.out = l)
-  plm0 <- matrix(0,ncol = l,nrow = 1)
-  plm1 <- matrix(0,ncol = l,nrow = 1)
-  plm2 <- matrix(0,ncol = l,nrow = 1)
-  betticurve0 <- numeric(l)
-  betticurve1 <- numeric(l)
-  betticurve2 <- numeric(l)
-  ph0 <- diag[which(diag[,1]==0),2:3][-1,]
-  ph1 <- diag[which(diag[,1]==1),2:3]
-  ph2 <- diag[which(diag[,1]==2),2:3]
-  for(j in 1:l){
-    betticurve0[j] <- betti.fun(ph0,xseq[j])
-    betticurve1[j] <- betti.fun(ph1,xseq[j])
-    betticurve2[j] <- betti.fun(ph2,xseq[j])
-  }
-  plm0[1,] <- betticurve0
-  plm1[1,] <- betticurve1
-  plm2[1,] <- betticurve2
 
-  plm_list <- list(plm0,plm1,plm2)
-  return(plm_list)
+#' compute betti curves until some order from persistence diagram
+#' if order=-1 then the order is infered from diag
+#' if xmax=-1 the max lenght is infered from diag
+#' 
+#' @param diag is a persistence diagram from TDA o TDAstats
+#' @param order is the maximum order the betti curve is computed
+#' @param xmax is the maximum length/time the betti curve is computed
+#' @param l is the dimension of each betticurve
+#' @return a 3 times l matrix with the betticurve
+#' @example 
+#' bettimatrix(diag)
+bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
+  # check if diag is a matrix
+  # PENDIENTE: HACER FUNCION PARA CHECAR QUE ES UN DIAG VALIDO
+  if (is.matrix(diag)) {
+  } else if (is.list(diag)) {
+    diag <- diag$diagram
+  } else {
+    print('diag not a valid persistence matrix')
+    break
+  }
+  
+  # assign xmax automatically, info in description
+  if (xmax == -1){
+    xmax <- max(diag[-1,2:3]) * 1.05 # maximum plus 5%
+  }
+  
+  # assign order automatically, info in description
+  if (order == -1){
+    order <- max(alpha_diag[,1]) # starts at 0
+  }
+  
+  # create the x dimension for the bettimatrix
+  xseq <- seq((xmax/(2*l)), xmax, length.out = l)
+  
+  bettimatrix <- matrix(NA, ncol = 3, nrow = 0)
+  colnames(bettimatrix) <- c('order', 'xseq', 'value')
+  
+  for(i in 0:order){
+    if(order==0){
+      phx <- diag[which(diag[,1]==i), 2:3][-1,]
+    } else {
+      phx <- diag[which(diag[,1]==i), 2:3]
+    }
+    for(j in 1:l){
+      bettivalue <- betti.fun(phx, xseq[j])
+      bettimatrix <- rbind(bettimatrix, 
+                           c(i, xseq[j], bettivalue))
+    }
+  }
+  bettimatrix <- as_tibble(bettimatrix)
+  bettimatrix$order <- factor(bettimatrix$order)
+  return(bettimatrix)
 }
