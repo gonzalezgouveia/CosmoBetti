@@ -1,5 +1,13 @@
 inst/doc
 .Rproj.user
-.Rproj.user\
+.Rproj.user/*
 *.Rproj
 .Rhistory
+
+.Rhistory
+
+*.pper
+
+.Rproj.user/D452DDA2/sources/prop/401AC153
+
+.Rproj.user/shared/notebooks/paths
