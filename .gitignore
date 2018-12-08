@@ -1,4 +1,5 @@
 inst/doc
 .Rproj.user
+.Rproj.user\
 *.Rproj
 .Rhistory
