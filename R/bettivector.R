@@ -74,7 +74,7 @@ bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
                            c(i, xseq[j], bettivalue))
     }
   }
-  bettimatrix <- as_tibble(bettimatrix)
+  bettimatrix <- tibble::as_tibble(bettimatrix)
   bettimatrix$order <- factor(bettimatrix$order)
   return(bettimatrix)
 }
@@ -89,7 +89,7 @@ bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
 #' @examples
 #' plot_betti(betticurve)
 plot_betti <- function(betticurve){
-  ggplot(betticurve, aes(x = xseq, y = value, color = order)) +
-    geom_line() +
-    facet_grid(rows = vars(order), scales = "free")
+  ggplot2::ggplot(betticurve, aes(x = xseq, y = value, color = order)) +
+    ggplot2::geom_line() +
+    ggplot2::facet_grid(rows = vars(order), scales = "free")
 }
