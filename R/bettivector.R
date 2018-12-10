@@ -78,3 +78,18 @@ bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
   bettimatrix$order <- factor(bettimatrix$order)
   return(bettimatrix)
 }
+
+
+#' Plot Betti Curves
+#'
+#' Plot Betti Curves until some order from persistence diagram
+#' in a ggplot style with facets and free scales
+#'
+#' @param betticurve is a betti matrix from bettimatrix
+#' @examples
+#' plot_betti(betticurve)
+plot_betti <- function(betticurve){
+  ggplot(betticurve, aes(x = xseq, y = value, color = order)) +
+    geom_line() +
+    facet_grid(rows = vars(order), scales = "free")
+}
