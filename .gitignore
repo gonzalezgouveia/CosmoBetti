@@ -1,6 +1,5 @@
-inst/doc
+
+.Rhistory
 .Rproj.user/
 *.Rproj
-.Rhistory
-.Rhistory
 *.pper
