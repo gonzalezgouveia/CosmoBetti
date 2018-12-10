@@ -53,7 +53,7 @@ bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
 
   # assign order automatically, info in description
   if (order == -1){
-    order <- max(alpha_diag[,1]) # starts at 0
+    order <- max(diag[,1]) # starts at 0
   }
 
   # create the x dimension for the bettimatrix
