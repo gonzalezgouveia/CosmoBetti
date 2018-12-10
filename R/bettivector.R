@@ -91,5 +91,5 @@ bettimatrix <- function(diag, order = -1, xmax=-1, l = 100){
 plot_betti <- function(betticurve){
   ggplot2::ggplot(betticurve, ggplot2::aes(x = xseq, y = value, color = order)) +
     ggplot2::geom_line() +
-    ggplot2::facet_grid(rows = vars(order), scales = "free")
+    ggplot2::facet_grid(rows = ggplot2::vars(order), scales = "free")
 }
