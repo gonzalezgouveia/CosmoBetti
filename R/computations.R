@@ -47,10 +47,10 @@ compute_betti_number <- function(diag, dim, radius){
 #' @param len is the length of each betticurve
 #' @return A matrix with the Betti curves
 #' @examples
-#' library(TDA)
-#' data <- cbind(runif(10), runif(10))
-#' diag <- alphaComplexDiag(data)$diagram
-#' bettimatrix(diag)
+#' library(TDAstats)
+#' X <- cbind(runif(100), runif(100))
+#' diag <- calculate_homology(X)
+#' compute_betti_curves(diag)
 compute_betti_curves <- function(diag, maxdim = -1, maxradius=-1, len = 100){
   # check if diag is a matrix
   # PENDIENTE: HACER FUNCION PARA CHECAR QUE ES UN DIAG VALIDO
