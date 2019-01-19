@@ -30,8 +30,8 @@ if \code{maxdim = -1} then the dimension is infered from diag
 if \code{maxradius = -1} the maximum radius is infered from diag
 }
 \examples{
-library(TDA)
-data <- cbind(runif(10), runif(10))
-diag <- alphaComplexDiag(data)$diagram
-bettimatrix(diag)
+library(TDAstats)
+X <- cbind(runif(100), runif(100))
+diag <- calculate_homology(X)
+compute_betti_curves(diag)
 }
