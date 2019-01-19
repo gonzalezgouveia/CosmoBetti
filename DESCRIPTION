@@ -1,12 +1,13 @@
 Package: betticurves
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Compute Betti Curves in R
 Version: 0.1.0
-Authors@R: person("First", "Last", email = "first.last@example.com",
+Authors@R: person("Rafael", "Gonzalez", email = "gonzalez.gouveia@gmail.com",
                   role = c("aut", "cre"))
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Maintainer: Rafael Gonzalez <gonzalez.gouveia@gmail.com>
+Description: The betticurves packege implements betti curves from topological data analysis.
+    It computes the curve based on a homology diagram. 
+    It accepts diagrams from TDA packege and TDAstat packege.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

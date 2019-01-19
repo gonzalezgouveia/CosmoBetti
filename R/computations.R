@@ -18,6 +18,7 @@
 #' @param dim is the dimension of the homology group
 #' @param radius is the radius for which the betti number is computed
 #' @return the betti number (birth - death)
+#' @export
 compute_betti_number <- function(diag, dim, radius){
   # alphaComplexDiag comes with Inf in first row
   if(diag[1,3] == Inf){
@@ -51,6 +52,7 @@ compute_betti_number <- function(diag, dim, radius){
 #' X <- cbind(runif(100), runif(100))
 #' diag <- calculate_homology(X)
 #' compute_betti_curves(diag)
+#' @export
 compute_betti_curves <- function(diag, maxdim = -1, maxradius=-1, len = 100){
   # check if diag is a matrix
   # PENDIENTE: HACER FUNCION PARA CHECAR QUE ES UN DIAG VALIDO

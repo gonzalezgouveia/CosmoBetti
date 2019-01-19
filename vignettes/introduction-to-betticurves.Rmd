@@ -4,7 +4,7 @@ author: "Rafael Gonzalez Gouveia"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Introducing betticurves package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -62,9 +62,9 @@ plot(data, main='Data for the example')
 Next, we calculate the homology diagram. Here I decided to use the `TDAstat` package because it is faster due to an implementation of Ripser algorithm, but it works fine with diagrams from `TDA` packages(`ripsDiag` or `alphaComplexDiag`), just take a look at the commented line to know how to extract the matrix from the 'diagram' object of TDA.
 
 ```{r}
-diag <- calculate_homology(data)            # for TDAstat package
-# diag <- alphaComplexDiag(data)$diagram    # for TDA package
-betti_curve <- compute_betti_curves(diag)
+diag <- TDAstats::calculate_homology(data)            # for TDAstat package
+# diag <- TDA::alphaComplexDiag(data)$diagram    # for TDA package
+betti_curve <- betticurves::compute_betti_curves(diag)
 print(summary(betti_curve))
 ```
 
