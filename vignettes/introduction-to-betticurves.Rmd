@@ -29,7 +29,7 @@ My intention is to refactor all the code I used during my master thesis at CIMAT
 By now the package is not available in CRAN. So in order to use it in your R session you can install first the `devtools` packages (documentation [here](https://www.rstudio.com/products/rpackages/devtools/)) and then use the following code:
 ```{r, eval=FALSE}
 # install package from GitHub
-devtools::install_github("gonzalezgouveia/betticurves")
+devtools::install_github("gonzalezgouveia/betticurves", force=TRUE, build_opts = c("--no-resave-data", "--no-manual"))
 ```
 The github repo link [here](https://github.com/gonzalezgouveia/betticurves/). This version may be unstable and it is under development.
 
