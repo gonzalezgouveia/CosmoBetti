@@ -1,17 +1,8 @@
-# obejtivo del paquete:
 
-Hacer un compendio de las cosas que hice en la tesis y la maestria relativo a TDA.
 
-Servir de puente entre los diagramas de TDA y un vector
-con informacion topologica (curvas de betti) que permita facilmente hacer los modelos/analisis
-usuales de machine learning (clasificacion/clustering) y estadistica (prueba de hipotesis).
+My intention is to refactor all the code I used during my master thesis at CIMAT (Guanajuato, Mexico) and at the same time learn how to put it in a R package and upload it in GitHub. In my thesis I analyse how betti curve can be implemented in a data science framework. My work can be seen on [This link](https://gonzalezgouveia.github.io/documents/TesisMaestriaRafael.pdf). Unfortunatelly by the time this documentation is been written (jan 2019) my work is only available in spanish. I am working on a English draft. You can also contact me via Git Hub if you are more interested on my work.
 
-Ofrecer una libreria que facilite el analisis de datos con betti curves
 
-* parte 1 de desarrollo (elementos)
-  * que sea facil extraer los vectores de betti
-	* que sea facil hacer las graficas
-* parte 2 de desarrollo (aplicaciones)
-	* que sea facil obtener las pruebas de hipotesis
-	* que sea facil hacer el algoritmos de clasificacion
-	(con facil me refiero a que se haga con una sola funcion)
+# Contact me
+
+Please use the issues of the repository or send me a private message with GitHub or LinkedIn <https://www.linkedin.com/in/gonzalezgouveia/>
