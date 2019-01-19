@@ -16,50 +16,72 @@ knitr::opts_chunk$set(
 )
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+# Overview
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+The betticurves packege implements betti curves from topological data analysis. It computes the curve based on a homology diagram. It accepts diagrams from TDA packege and TDAstat packege.
 
-## Vignette Info
+# What is the objective behind the package?
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+My intention is to refactor all the code I used during my master thesis at CIMAT (Guanajuato, Mexico) and at the same time learn how to put it in a R package and upload it in GitHub. In my thesis I analyse how betti curve can be implemented in a data science framework. My work can be seen on [This link](https://gonzalezgouveia.github.io/documents/TesisMaestriaRafael.pdf). Unfortunatelly by the time this documentation is been written (jan 2019) my work is only available in spanish. I am working on a English draft. You can also contact me via Git Hub if you are more interested on my work.
 
-## Styles
+# How to install the package from github?
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+By now the package is not available in CRAN. So in order to use it in your R session you can install first the `devtools` packages (documentation [here](https://www.rstudio.com/products/rpackages/devtools/)) and then use the following code:
+```{r, eval=FALSE}
+# install package from GitHub
+devtools::install_github("gonzalezgouveia/betticurves")
+```
+The github repo link [here](https://github.com/gonzalezgouveia/betticurves/). This version may be unstable and it is under development.
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+# How to use betticurves?
 
-## Figures
+By now, the packege only have two functions for computations and one for visualization:
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+* The function `compute_betti_number` is for Betti number of a persistence diagram for a desired dimension and radius.
+* The function `compute_betti_curve` Compute Betti curves of a persistence diagram until a desired dimension, a maximum radius, and output vector lenght. So betti_number is been used inside betti_curve function. 
+* The `compute_betti_curve` will return a tibble which is ready to be plotted using the `plot_betti_curve` function. 
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+## Example workflow
+
+Let's take a look at an example of the basic workflow. I will asume you have already downloaded the package from GitHub. This example uses the function `calculate_homology` from the TDAstats package (documentation [here](https://github.com/rrrlw/TDAstats)). You can install this package directly from CRAN.
+
+So first we load the packages in the R session
+```{r}
+library("betticurves")
+library("TDAstats")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+In this example we will the data from a two dimentional uniform point process. So it will have 100 uniformly distributed random points for the first coordinate and the same for the second coordinate. 
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r}
+set.seed(12321)
+data <- cbind(runif(100), runif(100))
+plot(data, main='Data for the example')
 ```
 
-Also a quote using `>`:
+Next, we calculate the homology diagram. Here I decided to use the `TDAstat` package because it is faster due to an implementation of Ripser algorithm, but it works fine with diagrams from `TDA` packages(`ripsDiag` or `alphaComplexDiag`), just take a look at the commented line to know how to extract the matrix from the 'diagram' object of TDA.
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r}
+diag <- calculate_homology(data)            # for TDAstat package
+# diag <- alphaComplexDiag(data)$diagram    # for TDA package
+betti_curve <- compute_betti_curves(diag)
+print(summary(betti_curve))
+```
+
+The betti_curve tibble has three variables: 
+
+* `dim`: the dimensions of the homology. Here only 0 and 1.
+* `radius`: the radius of the complex filtration. Remember points are generated in the interval [0,1].
+* `value`: the betti number for a radius. We have circa 100 points.
+
+We can see the resulting curves with the function `plot_betti_curve`
+
+```{r}
+plot_betti_curve(betti_curve) + ggplot2::ggtitle('Betti curves for data')
+```
+
+The tibble have two values in dimentions corresponding to the first and second homology dimention. The radius of the filtration of the complex varies from 0 to approximatelly 0.3. The value of the curve is reflected on the y-axis. As expected, the dimension zero (connected components) vanish to zero as the radius grows. The 1-dimension loops grows and then decay.
+
+# Contact me
+
+Please use the issues of the repository or send me a private message with GitHub or LinkedIn <https://www.linkedin.com/in/gonzalezgouveia/>
